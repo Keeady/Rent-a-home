@@ -1,0 +1,15 @@
+{
+  "name": "Rent-a-home",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+
+  ]
+}
