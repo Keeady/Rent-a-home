@@ -1,27 +1,33 @@
 import {Injectable} from '@angular/core';
 import { GoogleMapsService } from 'google-maps-angular2';
 
-@Injectable
+@Injectable()
 export class MapService {
     constructor (private mapApiService: GoogleMapsService) {
         this.mapApiService = mapApiService;
     }
 
-    public createMap(lat: number, lng: number, mapElement: any): any {
-        return this.initializeMap(lat, lng, mapElement);
+    public createMap(): any {
+        return this.initializeMap();
     }
 
-    protected initializeMap(lat: number, lng: number, mapElement: any): any {
+    protected initializeMap() {
         /**
          * Init map api [google.maps]
          */
-        return this.mapApiService.init();
+        return this.mapApiService.init;
     }
 
+    /**
+     * @param mapObj
+     * @param {number} lat
+     * @param {number} lng
+     * @param mapElement
+     */
     public displayMap(mapObj: any, lat: number, lng: number, mapElement: any): void {
         const center = new mapObj.LatLng(lat, lng);
 
-        return new mapObj.Map(mapElement.nativeElement, {
+        const map = new mapObj.Map(mapElement.nativeElement, {
             zoom: 13,
             center: center,
             scrollwheel: false,
@@ -36,5 +42,17 @@ export class MapService {
             },
             gestureHandling: 'cooperative'
         });
+
+        const marker = new mapObj.Marker({
+            position: center,
+            title: 'center',
+            map: map
+        });
+
+        marker.addListener('click', function (e) {
+            console.log('clciked ');
+        });
+
+        return map;
     }
 }
