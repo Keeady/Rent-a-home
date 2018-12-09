@@ -3,7 +3,8 @@ import {PropertyService} from '../../lib/services/property.service';
 
 @Component({
     templateUrl: './address-search.component.html',
-    selector: 'app-address-search'
+    selector: 'app-address-search',
+    styleUrls: ['./address-search.component.css']
 })
 export class AddressSearchComponent {
     @Input() address: string;
