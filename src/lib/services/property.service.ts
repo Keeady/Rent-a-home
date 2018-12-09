@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { app_config } from 'app_config';
 
 @Injectable()
 export class PropertyService {
-    apiUrl = 'http://localhost:3000/api';
+    apiUrl: string;
 
     constructor(private http: HttpClient) {
         this.http = http;
+        this.apiUrl = app_config.API_URL;
     }
 
     public searchPropertiesByAddress(address: string, city: string, state: string, zip: string) {
