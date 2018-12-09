@@ -8,8 +8,7 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "preinstall": "npm install -g angular-cli"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -25,10 +24,13 @@
     "core-js": "^2.4.1",
     "google-maps-angular2": "^1.1.2",
     "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "@angular/cli": "^1.7.4",
+    "@angular/compiler-cli": "^5.2.0",
+    "typescript": "~2.5.3"
   },
   "devDependencies": {
-    "@angular/cli": "~1.7.4",
+    "@angular/cli": "^1.7.4",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
