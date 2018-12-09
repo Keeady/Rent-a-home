@@ -45,7 +45,7 @@ export class MapService {
             gestureHandling: 'cooperative'
         });
 
-        const marker = new mapObj.Marker({
+        /*const marker = new mapObj.Marker({
             position: center,
             title: 'center',
             map: map
@@ -54,12 +54,16 @@ export class MapService {
         const self = this;
         marker.addListener('click', function (e) {
             console.log(e.latLng.lat(), e.latLng.lng());
-        });
+        });*/
 
         return map;
     }
 
-    protected createMarker(map, lat, lng, markerTitle) {
+    public addMarker(marker, mapInstace) {
+        marker.setMap(mapInstace);
+    }
+
+    public createMarker(map, lat, lng, markerTitle) {
         return new map.Marker({
             position: {lat: lat, lng: lng},
             title: markerTitle
@@ -84,5 +88,9 @@ export class MapService {
     public createMarkerCluster(map, markers: any): any {
         return new MarkerClusterer(map, markers,
             {imagePath: 'http://localhost:4200/assets/images/m'});
+    }
+
+    public centerMap(map, latitude: string, longitude: string) {
+        map.setCenter({lat: latitude, lng: longitude});
     }
 }

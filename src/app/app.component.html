@@ -1,3 +1,7 @@
 <h1>Welcome home</h1>
 <app-address-search (addressSearchEvent)="onAddressSearchEvent($event)"></app-address-search>
-<app-map-selector [markers]="addressMarkers"></app-map-selector>
+<app-map-selector
+        [markerLocations]="addressMarkers"
+        (mapReadyEvent)="onMapReadyEvent($event)"
+        [userLocation]="userLocation"
+></app-map-selector>

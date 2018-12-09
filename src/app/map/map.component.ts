@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, ViewChild} from '@angular/core';
 import {MapService} from '../../lib/services/map.service';
 
 @Component({
@@ -8,41 +8,66 @@ import {MapService} from '../../lib/services/map.service';
 export class MapComponent implements AfterViewInit, OnChanges {
     @ViewChild('mapElement') mapElement: ElementRef;
 
-    // default center of map
-    lat = 40.730610;
-    lng = -73.935242;
     map: any;
     mapInstance: any;
-    @Input() markers;
+    markers: any[] = [];
+    @Input() markerLocations;
+    @Output() mapReadyEvent: EventEmitter<void> = new EventEmitter();
+    @Input() userLocation;
 
     constructor(private mapService: MapService) {}
 
     ngAfterViewInit(): void {
-        this.displayMap();
+        const mapInitPromise = this.displayMap();
+        mapInitPromise.then( () => {
+            this.centerMap(this.userLocation);
+            this.mapReadyEvent.emit();
+        });
     }
 
-    ngOnChanges(): void {
-        if (this.markers.length > 0) {
+    ngOnChanges(e: any): void {
+        if (e.markerLocations && this.markerLocations.length > 0) {
             this.displayMarkers();
+        }
+
+        if (e.userLocation) {
+            this.clearMarkers(this.markers);
+            this.centerMap(this.userLocation);
         }
     }
 
-    displayMap(): void {
+    displayMap(): Promise<any> {
         const mapInit = this.mapService.createMap();
         mapInit.then( (map) => {
             this.map = map;
-            this.mapInstance = this.mapService.displayMap(map, this.lat, this.lng, this.mapElement);
+            this.mapInstance = this.mapService.displayMap(map, this.userLocation.lat, this.userLocation.lng, this.mapElement);
         });
+
+        return mapInit;
     }
 
     displayMarkers() {
-        const r = this.mapService.displayMarker(this.map, this.markers, 'click', function (e) {
+        const r = this.mapService.displayMarker(this.map, this.markerLocations, 'click', function (e) {
             console.log(e.latLng.lat(), e.latLng.lng());
         });
-        console.log(r);
 
-        const c = this.mapService.createMarkerCluster(this.mapInstance, r);
-        console.log(c);
+        this.mapService.createMarkerCluster(this.mapInstance, r);
+    }
 
+    centerMap(location) {
+        if (!this.mapInstance) {
+            return;
+        }
+
+        this.mapService.centerMap(this.mapInstance, location.lat, location.lng);
+        const marker = this.mapService.createMarker(this.map, location.lat, location.lng, location.title);
+        this.markers.push(marker);
+        this.mapService.addMarker(marker, this.mapInstance);
+    }
+
+    clearMarkers(markers) {
+        markers.forEach((item: any) => {
+            item.setMap(null);
+        });
     }
 }
