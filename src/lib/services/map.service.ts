@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import { GoogleMapsService } from 'google-maps-angular2';
+import { environment } from '../../environments/environment';
 declare var MarkerClusterer: any;
 
 @Injectable()
@@ -76,7 +77,7 @@ export class MapService {
 
     public createMarkerCluster(map, markers: any): any {
         return new MarkerClusterer(map, markers,
-            {imagePath: 'http://localhost:4200/assets/images/m'});
+            {imagePath: environment.appUrl + '/assets/images/m'});
     }
 
     public centerMap(map, latitude: string, longitude: string) {
