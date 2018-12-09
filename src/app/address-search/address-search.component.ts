@@ -27,9 +27,13 @@ export class AddressSearchComponent implements OnChanges {
         }
     }
 
-    searchAddress(address: string, city: string, state: string, zip: string): void {
+    searchAddress() {
+        return this.search(this.address, this.city, this.state, this.zip);
+    }
+
+    search(address: string, city: string, state: string, zip: string): void {
         this.markers = [];
-        const promise = this.propertyService.searchPropertiesByAddress(this.address, this.city, this.state, this.zip);
+        const promise = this.propertyService.searchPropertiesByAddress(address, city, state, zip);
         if (!promise) {
             return;
         }
@@ -78,6 +82,6 @@ export class AddressSearchComponent implements OnChanges {
     }
 
     protected searchByZip(zip: string) {
-        return this.searchAddress(null, null, null, zip);
+        return this.search(null, null, null, zip);
     }
 }

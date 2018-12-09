@@ -5,7 +5,7 @@
 ></app-address-search>
 <app-map-selector
         [markerLocations]="addressMarkers"
-        (mapReadyEvent)="onMapReadyEvent($event)"
+        (mapReadyEvent)="onMapReadyEvent()"
         [userLocation]="userLocation"
         (mapClickedEvent)="onMapClickedEvent($event)"
 ></app-map-selector>
