@@ -1,7 +1,11 @@
 <h1>Welcome home</h1>
-<app-address-search (addressSearchEvent)="onAddressSearchEvent($event)"></app-address-search>
+<app-address-search
+        (addressSearchEvent)="onAddressSearchEvent($event)"
+        [zip]="zip"
+></app-address-search>
 <app-map-selector
         [markerLocations]="addressMarkers"
         (mapReadyEvent)="onMapReadyEvent($event)"
         [userLocation]="userLocation"
+        (mapClickedEvent)="onMapClickedEvent($event)"
 ></app-map-selector>

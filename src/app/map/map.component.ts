@@ -12,8 +12,10 @@ export class MapComponent implements AfterViewInit, OnChanges {
     mapInstance: any;
     markers: any[] = [];
     @Input() markerLocations;
-    @Output() mapReadyEvent: EventEmitter<void> = new EventEmitter();
     @Input() userLocation;
+
+    @Output() mapReadyEvent: EventEmitter<void> = new EventEmitter();
+    @Output() mapClickedEvent: EventEmitter<object> = new EventEmitter();
 
     constructor(private mapService: MapService) {}
 
@@ -62,6 +64,11 @@ export class MapComponent implements AfterViewInit, OnChanges {
         this.mapService.centerMap(this.mapInstance, location.lat, location.lng);
         const marker = this.mapService.createMarker(this.map, location.lat, location.lng, location.title);
         this.markers.push(marker);
+        const self = this;
+        this.mapService.addMarkerListener(marker, 'click', function (e) {
+            const geocodePromise = self.mapService.reverseGeocode(self.map, e.latLng.lat(), e.latLng.lng());
+            self.mapClickedEvent.emit({lat: e.latLng.lat(), lng: e.latLng.lng(), geocodePromise: geocodePromise});
+        });
         this.mapService.addMarker(marker, this.mapInstance);
     }
 

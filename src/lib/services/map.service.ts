@@ -45,17 +45,6 @@ export class MapService {
             gestureHandling: 'cooperative'
         });
 
-        /*const marker = new mapObj.Marker({
-            position: center,
-            title: 'center',
-            map: map
-        });
-
-        const self = this;
-        marker.addListener('click', function (e) {
-            console.log(e.latLng.lat(), e.latLng.lng());
-        });*/
-
         return map;
     }
 
@@ -70,7 +59,7 @@ export class MapService {
         });
     }
 
-    protected addMarkerListener(marker, eventName, callback) {
+    public addMarkerListener(marker, eventName, callback) {
         marker.addListener(eventName, callback);
         return marker;
     }
@@ -92,5 +81,14 @@ export class MapService {
 
     public centerMap(map, latitude: string, longitude: string) {
         map.setCenter({lat: latitude, lng: longitude});
+    }
+
+    public reverseGeocode(map, lat, lng) {
+        const geocoder = new map.Geocoder();
+        return new Promise((resolve) => {
+            geocoder.geocode({location: {lat: lat, lng: lng}}, function (d) {
+                resolve(d);
+            });
+        });
     }
 }

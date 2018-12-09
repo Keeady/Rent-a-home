@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {PropertyService} from '../../lib/services/property.service';
 
 @Component({
@@ -6,7 +6,7 @@ import {PropertyService} from '../../lib/services/property.service';
     selector: 'app-address-search',
     styleUrls: ['./address-search.component.css']
 })
-export class AddressSearchComponent {
+export class AddressSearchComponent implements OnChanges {
     @Input() address: string;
     @Input() city: string;
     @Input() state: string;
@@ -21,7 +21,13 @@ export class AddressSearchComponent {
 
     constructor(private propertyService: PropertyService) {}
 
-    searchAddress(address: string): void {
+    public ngOnChanges(e) {
+        if (e.zip && this.zip) {
+            this.searchByZip(this.zip);
+        }
+    }
+
+    searchAddress(address: string, city: string, state: string, zip: string): void {
         this.markers = [];
         const promise = this.propertyService.searchPropertiesByAddress(this.address, this.city, this.state, this.zip);
         if (!promise) {
@@ -69,5 +75,9 @@ export class AddressSearchComponent {
         }
 
         return marker;
+    }
+
+    protected searchByZip(zip: string) {
+        return this.searchAddress(null, null, null, zip);
     }
 }
